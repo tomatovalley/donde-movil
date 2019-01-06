@@ -34,7 +34,7 @@ export default class LoginForm extends React.Component{
                     <Text style={styles.buttonText}>Iniciar Sesión</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginContainer} onPress={() => this.props.navigator.navigate('Register')}>
+                <TouchableOpacity style={styles.loginContainer} onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.buttonText}>Registarse</Text>
                 </TouchableOpacity>
 
