@@ -1,7 +1,25 @@
 import React from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView, Dimensions, Text, TouchableOpacity, TextInput  } from 'react-native';
+import { StyleSheet, View, Image, KeyboardAvoidingView, Dimensions, Text, TouchableOpacity, TextInput, AsyncStorage  } from 'react-native';
 
 export default class LoginScreen extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            username: '',
+            password: '',
+        }
+    }
+    componentDidMount(){
+        this._loadInitialState().done();
+    }
+
+    _loadInitialState= async () => {
+        var value = await AsyncStorage.getItem('usuario');
+        if(value !== null){
+            this.props.navigation.navigate('Main');
+        }
+    }
+
     static navigationOptions ={
         header: null
     }
@@ -19,6 +37,7 @@ export default class LoginScreen extends React.Component{
                             style={styles.input}
                             placeholder="Usuario ó Correo electrónico"
                             placeholderTextColor="rgba(255,255,255,0.7)"
+                            onChangeText={ (username) => this.setState({username}) }
                             returnKeyType="Siguiente"
                             onSubmitEditing={() => this.passwordInput.focus()}
                             keyboardType="email-address"
@@ -27,6 +46,7 @@ export default class LoginScreen extends React.Component{
                         <TextInput 
                             style={styles.input}
                             placeholder="Contraseña" 
+                            onChangeText={ (password) => this.setState({password}) }
                             placeholderTextColor="rgba(255,255,255,0.7)"
                             secureTextEntry
                             returnKeyType="Ir"
@@ -35,7 +55,7 @@ export default class LoginScreen extends React.Component{
                     </View>
                     
 
-                    <TouchableOpacity style={styles.loginContainer} >
+                    <TouchableOpacity style={styles.loginContainer} onPress={this.login}>
                         <Text style={styles.buttonText}>Iniciar Sesión</Text>
                     </TouchableOpacity>
 
@@ -49,6 +69,34 @@ export default class LoginScreen extends React.Component{
                 </View>
             </KeyboardAvoidingView>
         );
+    }
+    login = () => {
+        /*
+        if (this.state.username !== '' && this.state.password !== '') {
+            fetch('URL/users',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    password: this.state.password
+                })
+            })
+            .then((response) =>  response.json())
+            .then((res) => {
+                if (res.success === true) {
+                    AsyncStorage.setItem('usuario', res.user);
+                    this.props.navigation.navigate('Main');
+                }else{
+                    alert(res.message);
+                }
+            }).done();
+        }else{
+            alert('Rellene los campos');
+        }*/
+        this.props.navigation.push('Main');
     }
 }
 
@@ -75,7 +123,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 50,
-        backgroundColor: 'rgba(63, 81, 181,0.3)',
+        backgroundColor: 'rgba(47, 69, 98, 0.3)',
         color: '#fff',
         paddingHorizontal: 10,
         paddingLeft: 5,
@@ -91,7 +139,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     loginContainer: {
-        backgroundColor: 'rgba(63, 81, 181,0.6)',
+        backgroundColor: 'rgba(47, 69, 98, 0.8)',
         paddingVertical: 15,
         marginBottom: 5,
         borderRadius: 5

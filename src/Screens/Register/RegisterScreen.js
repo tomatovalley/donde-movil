@@ -4,9 +4,17 @@ import { CheckBox } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
 
 export default class RegisterScreen extends React.Component{
-    state = {
-        checked: false,
-      };
+    constructor(props){
+        super(props);
+        this.state = {
+            checked: false,
+            name: '',
+            email: '',
+            password: '',
+            password2: ''
+        };
+    }
+    
     static navigationOptions ={
         title: 'Registro',
         
@@ -18,7 +26,8 @@ export default class RegisterScreen extends React.Component{
                     <TextInput 
                         style={styles.input}
                         placeholder="Nombre completo"
-                        placeholderTextColor="rgba(255,255,255,0.7)"
+                        placeholderTextColor="rgba(255,255,255,1)"
+                        onChangeText={ (name) => this.setState({name}) }
                         returnKeyType="Siguiente"
                         onSubmitEditing={() => this.correoInput.focus()}
                     />
@@ -26,8 +35,9 @@ export default class RegisterScreen extends React.Component{
                     <TextInput 
                         style={styles.input}
                         placeholder="Usuario ó Correo electrónico"
-                        placeholderTextColor="rgba(255,255,255,0.7)"
+                        placeholderTextColor="rgba(255,255,255,1)"
                         returnKeyType="Siguiente"
+                        onChangeText={ (email) => this.setState({email}) }
                         onSubmitEditing={() => this.passwordInput.focus()}
                         ref = {(input)=> this.correoInput = input}
                         keyboardType="email-address"
@@ -36,8 +46,9 @@ export default class RegisterScreen extends React.Component{
                     <TextInput 
                         style={styles.input}
                         placeholder="Contraseña" 
-                        placeholderTextColor="rgba(255,255,255,0.7)"
+                        placeholderTextColor="rgba(255,255,255,1)"
                         secureTextEntry
+                        onChangeText={ (password) => this.setState({password}) }
                         returnKeyType="Siguiente"
                         onSubmitEditing={() => this.passwordInput2.focus()}
                         ref = {(input)=> this.passwordInput = input}
@@ -46,7 +57,8 @@ export default class RegisterScreen extends React.Component{
                     <TextInput 
                         style={styles.input}
                         placeholder="Confirmar contraseña" 
-                        placeholderTextColor="rgba(255,255,255,0.7)"
+                        placeholderTextColor="rgba(255,255,255,1)"
+                        onChangeText={ (password2) => this.setState({password2}) }
                         secureTextEntry
                         returnKeyType="Ir"
                         ref = {(input)=> this.passwordInput2 = input}
@@ -57,21 +69,38 @@ export default class RegisterScreen extends React.Component{
                         checkedIcon='dot-circle-o'
                         uncheckedIcon='circle-o'
                         checked={this.state.checked}
+                        onIconPress={!this.state.checked}
                     />
 
                 </View>
 
-                <TouchableOpacity style={styles.registerButton} >
+                <TouchableOpacity style={styles.registerButton} onPress={this.doRegister}>
                     <Text style={styles.buttonText}>Registrarse</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.FbkRefisterButton} onPress={() => this.props.navigation.navigate('Register')}>
+                <TouchableOpacity style={styles.FbkRefisterButton} onPress={this.doFbRegister}>
                     <Ionicons name="logo-facebook" size={32} color="white" style= {{textAlign: 'center'}} />
                     <Text style={styles.buttonText}>Registarse con Facebook</Text>
                 </TouchableOpacity>
                 
             </KeyboardAvoidingView>
         );
+    }
+
+    doRegister = ()=>{
+        if (this.state.name !== '' && this.state.email !== '' && this.state.checked && this.state.password !== '' && this.state.password2 !== '') {
+            if (this.state.password !== this.state.password2) {
+                alert('Las contraseñas no coinciden.');
+            } else {
+                alert('Se va a hacer el registro');
+            }
+        }else{
+            alert('Rellene todos los campos');
+        }
+    }
+
+    doFbRegister = () =>{
+        alert('se hará el registro con facebook');
     }
 }
 
@@ -81,7 +110,7 @@ const styles = StyleSheet.create({
     },
     input:{
         height: 50,
-        backgroundColor: 'rgba(63, 81, 181,0.3)',
+        backgroundColor: 'rgba(47, 69, 98, 0.2)',
         color: '#fff',
         paddingHorizontal: 10,
         paddingLeft: 5,
@@ -101,7 +130,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     FbkRefisterButton: {
-        backgroundColor: 'rgba(63, 81, 181,0.8)',
+        backgroundColor: 'rgba(63, 81, 181,0.7)',
         paddingVertical: 15,
         marginBottom: 5,
         borderRadius: 5,
