@@ -16,7 +16,7 @@ export default class LoginScreen extends React.Component{
     _loadInitialState= async () => {
         var value = await AsyncStorage.getItem('usuario');
         if(value !== null){
-            this.props.navigation.navigate('Main');
+            this.props.navigation.replace('Home');
         }
     }
 
@@ -38,7 +38,7 @@ export default class LoginScreen extends React.Component{
                             placeholder="Usuario ó Correo electrónico"
                             placeholderTextColor="rgba(255,255,255,0.7)"
                             onChangeText={ (username) => this.setState({username}) }
-                            returnKeyType="Siguiente"
+                            returnKeyType="next"
                             onSubmitEditing={() => this.passwordInput.focus()}
                             keyboardType="email-address"
                         />
@@ -49,7 +49,7 @@ export default class LoginScreen extends React.Component{
                             onChangeText={ (password) => this.setState({password}) }
                             placeholderTextColor="rgba(255,255,255,0.7)"
                             secureTextEntry
-                            returnKeyType="Ir"
+                            returnKeyType="done"
                             ref = {(input)=> this.passwordInput = input}
                         />
                     </View>
@@ -80,15 +80,15 @@ export default class LoginScreen extends React.Component{
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: this.state.username,
-                    password: this.state.password
+                    User: this.state.username,
+                    Password: this.state.password
                 })
             })
             .then((response) =>  response.json())
             .then((res) => {
                 if (res.success === true) {
                     AsyncStorage.setItem('usuario', res.user);
-                    this.props.navigation.navigate('Main');
+                    this.props.navigation.replace('Home');
                 }else{
                     alert(res.message);
                 }
@@ -96,7 +96,11 @@ export default class LoginScreen extends React.Component{
         }else{
             alert('Rellene los campos');
         }*/
-        this.props.navigation.push('Main');
+        //this.props.navigation.push('Home');
+        AsyncStorage.setItem('usuario', 'logeado').then(()=>{
+            this.props.navigation.replace('Home');
+        })
+        
     }
 }
 

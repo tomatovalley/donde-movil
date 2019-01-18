@@ -9,6 +9,7 @@ export default class RegisterScreen extends React.Component{
         this.state = {
             checked: false,
             name: '',
+            user: '',
             email: '',
             password: '',
             password2: ''
@@ -28,15 +29,24 @@ export default class RegisterScreen extends React.Component{
                         placeholder="Nombre completo"
                         placeholderTextColor="rgba(255,255,255,1)"
                         onChangeText={ (name) => this.setState({name}) }
-                        returnKeyType="Siguiente"
+                        returnKeyType="next"
+                        onSubmitEditing={() => this.user.focus()}
+                    />
+
+                    <TextInput 
+                        style={styles.input}
+                        placeholder="Usuario"
+                        placeholderTextColor="rgba(255,255,255,1)"
+                        onChangeText={ (user) => this.setState({user}) }
+                        returnKeyType="next"
                         onSubmitEditing={() => this.correoInput.focus()}
                     />
 
                     <TextInput 
                         style={styles.input}
-                        placeholder="Usuario ó Correo electrónico"
+                        placeholder="Correo electrónico"
                         placeholderTextColor="rgba(255,255,255,1)"
-                        returnKeyType="Siguiente"
+                        returnKeyType="next"
                         onChangeText={ (email) => this.setState({email}) }
                         onSubmitEditing={() => this.passwordInput.focus()}
                         ref = {(input)=> this.correoInput = input}
@@ -49,7 +59,7 @@ export default class RegisterScreen extends React.Component{
                         placeholderTextColor="rgba(255,255,255,1)"
                         secureTextEntry
                         onChangeText={ (password) => this.setState({password}) }
-                        returnKeyType="Siguiente"
+                        returnKeyType="next"
                         onSubmitEditing={() => this.passwordInput2.focus()}
                         ref = {(input)=> this.passwordInput = input}
                     />
@@ -60,7 +70,7 @@ export default class RegisterScreen extends React.Component{
                         placeholderTextColor="rgba(255,255,255,1)"
                         onChangeText={ (password2) => this.setState({password2}) }
                         secureTextEntry
-                        returnKeyType="Ir"
+                        returnKeyType="done"
                         ref = {(input)=> this.passwordInput2 = input}
                     />
                     <CheckBox
@@ -69,7 +79,7 @@ export default class RegisterScreen extends React.Component{
                         checkedIcon='dot-circle-o'
                         uncheckedIcon='circle-o'
                         checked={this.state.checked}
-                        onIconPress={!this.state.checked}
+                        onPress={() => this.setState({checked: !this.state.checked})}
                     />
 
                 </View>
@@ -92,7 +102,31 @@ export default class RegisterScreen extends React.Component{
             if (this.state.password !== this.state.password2) {
                 alert('Las contraseñas no coinciden.');
             } else {
-                alert('Se va a hacer el registro');
+                fetch('http://192.168.43.65:3001/doRegister',{
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        Name: this.state.name,
+                        Email: this.state.email,
+                        User: this.state.user,
+                        Password: this.state.password, 
+                        UserType: 3,
+                        City: 'Mexico'
+                    })
+                })
+                .then((response) =>  response.json())
+                .then((res) => {
+                    if (res.success === true) {
+                        AsyncStorage.setItem('usuario', res.user);
+                        alert(res);
+                        this.props.navigation.replace('Home');
+                    }else{
+                        alert(res.message);
+                    }alert(res);
+                }).done();
             }
         }else{
             alert('Rellene todos los campos');
@@ -102,6 +136,7 @@ export default class RegisterScreen extends React.Component{
     doFbRegister = () =>{
         alert('se hará el registro con facebook');
     }
+
 }
 
 const styles = StyleSheet.create({

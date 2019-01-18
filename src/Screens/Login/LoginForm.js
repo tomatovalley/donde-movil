@@ -14,7 +14,7 @@ export default class LoginForm extends React.Component{
                         style={styles.input}
                         placeholder="Usuario ó Correo electrónico"
                         placeholderTextColor="rgba(255,255,255,0.7)"
-                        returnKeyType="Siguiente"
+                        returnKeyType="next"
                         onSubmitEditing={() => this.passwordInput.focus()}
                         keyboardType="email-address"
                     />
@@ -24,7 +24,7 @@ export default class LoginForm extends React.Component{
                         placeholder="Contraseña" 
                         placeholderTextColor="rgba(255,255,255,0.7)"
                         secureTextEntry
-                        returnKeyType="Ir"
+                        returnKeyType="done"
                         ref = {(input)=> this.passwordInput = input}
                     />
                 </View>
