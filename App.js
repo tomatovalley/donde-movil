@@ -7,6 +7,8 @@ import {createStackNavigator, createAppContainer, DrawerActions} from 'react-nav
 import LoginScreen from './src/Screens/Login/LoginScreen';
 import RegisterScreen from './src/Screens/Register/RegisterScreen';
 import TabsContainer from './src/Screens/User/TabsContainer';
+import RegionalModeScreen from './src/Screens/User/GameScreens/RegionalModeScreen';
+import FreeModeScreen from './src/Screens/User/GameScreens/FreeModeScreen';
 
 export default class App extends React.Component {
   render(){
@@ -38,7 +40,26 @@ const AppStackNavigator = createStackNavigator({
                           <MenuImage name="md-menu" navigation={navigation}/>
                         </TouchableOpacity>,
           })
-        }
+        },
+  RegionalMode: { screen: RegionalModeScreen, 
+                navigationOptions: ({navigation}) => ({
+                  headerStyle: {
+                    backgroundColor: 'rgba(47, 69, 98, 1)'
+                  },
+                  title: 'Regional',
+                  headerTintColor: '#fff'
+                }) 
+            },
+FreeMode: { screen: FreeModeScreen, 
+            navigationOptions: ({navigation}) => ({
+              headerStyle: {
+                backgroundColor: 'rgba(47, 69, 98, 1)'
+              },
+              title: 'Libre',
+              headerTintColor: '#fff'
+            })
+          }
+  
 });
 
 const App1 = createAppContainer(AppStackNavigator);

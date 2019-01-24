@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'react-native';
+import {View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
+import { Constants, Location, Permissions } from 'expo';
 
 export default class RegisterScreen extends React.Component{
     constructor(props){
@@ -12,15 +13,41 @@ export default class RegisterScreen extends React.Component{
             user: '',
             email: '',
             password: '',
-            password2: ''
+            password2: '',
+            Location: null,
+            errorMessage: null
         };
     }
+    
     
     static navigationOptions ={
         title: 'Registro',
         
     };
+
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          this.setState({
+            errorMessage: 'Permission to access location was denied',
+          });
+        }else{
+            this.setState({checked: !this.state.checked})
+            let location = await Location.getCurrentPositionAsync({});
+            this.setState({ Location: location });
+            alert(this.state.Location);
+        }
+    
+      };
     render(){
+
+        let text = 'Waiting..';
+        if (this.state.errorMessage) {
+        text = this.state.errorMessage;
+        } else if (this.state.location) {
+        text = JSON.stringify(this.state.location);
+        }
+
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <View style={styles.inputContainer}>
@@ -39,7 +66,7 @@ export default class RegisterScreen extends React.Component{
                         placeholderTextColor="rgba(255,255,255,1)"
                         onChangeText={ (user) => this.setState({user}) }
                         returnKeyType="next"
-                        onSubmitEditing={() => this.correoInput.focus()}
+                        onSubmitEditing={(user) => this.correoInput.focus()}
                     />
 
                     <TextInput 
@@ -79,7 +106,7 @@ export default class RegisterScreen extends React.Component{
                         checkedIcon='dot-circle-o'
                         uncheckedIcon='circle-o'
                         checked={this.state.checked}
-                        onPress={() => this.setState({checked: !this.state.checked})}
+                        onPress={this._getLocationAsync}
                     />
 
                 </View>
@@ -102,7 +129,8 @@ export default class RegisterScreen extends React.Component{
             if (this.state.password !== this.state.password2) {
                 alert('Las contraseñas no coinciden.');
             } else {
-                fetch('http://192.168.43.65:3001/doRegister',{
+                //fetch('http://192.168.0.16:3001/api/doRegister',{
+                fetch('http://172.16.13.147:3001/api/doRegister',{
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -121,7 +149,7 @@ export default class RegisterScreen extends React.Component{
                 .then((res) => {
                     if (res.success === true) {
                         AsyncStorage.setItem('usuario', res.user);
-                        alert(res);
+                        alert("Felicidades",res);
                         this.props.navigation.replace('Home');
                     }else{
                         alert(res.message);
@@ -141,7 +169,7 @@ export default class RegisterScreen extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
     },
     input:{
         height: 50,

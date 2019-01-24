@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer, createDrawerNavigator  } from 'react-navigation';
+import { createMaterialTopTabNavigator, createAppContainer, createDrawerNavigator, StackNavigator, createStackNavigator  } from 'react-navigation';
 import DrawerScreen from './DrawerScreen';
 
 //Pantallas
 import UserHomeScreen from './MainScreens/UserHomeScreen';
 import UserTopsScreen from './MainScreens/UserTopsScreen';
-import UserGameScreen from './MainScreens/UserGameScreen';
+import App from './MainScreens/UserGameScreen';
+
 
 
 //Aqui se crean las tabs
 const Tabs = createMaterialTopTabNavigator({
   Inicio: UserHomeScreen,
-  Juego: UserGameScreen,
+  Juego: App,
   Tops: UserTopsScreen,
 },{
   tabBarOptions: {
@@ -29,13 +30,14 @@ const Tabs = createMaterialTopTabNavigator({
 
 //Aqui se crea el Drawer(el menu)
 const AppDrawerNavigator = createDrawerNavigator({
-  Home:{
+  Inicio:{
       screen: Tabs
-  }
+  },
+
 },{
-  initialRouteName: 'Home',
+  initialRouteName: 'Inicio',
   contentComponent: DrawerScreen,
-  drawerWidth: 300
+  drawerWidth: 250
 });
 
 const MenuImage = ({navigation}) => {

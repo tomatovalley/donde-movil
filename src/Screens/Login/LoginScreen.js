@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView, Dimensions, Text, TouchableOpacity, TextInput, AsyncStorage  } from 'react-native';
+import { StyleSheet, ActivityIndicator, View, Alert, Image, KeyboardAvoidingView, Dimensions, Text, TouchableOpacity, TextInput, AsyncStorage  } from 'react-native';
 
 export default class LoginScreen extends React.Component{
     constructor(props){
@@ -7,12 +7,14 @@ export default class LoginScreen extends React.Component{
         this.state = {
             username: '',
             password: '',
+            loading: false
         }
-    }
-    componentDidMount(){
         this._loadInitialState().done();
     }
-
+    /*componentDidMount(){
+        this._loadInitialState().done();
+    }
+*/
     _loadInitialState= async () => {
         var value = await AsyncStorage.getItem('usuario');
         if(value !== null){
@@ -23,7 +25,13 @@ export default class LoginScreen extends React.Component{
     static navigationOptions ={
         header: null
     }
+    showloading(){
+        if(this.state.loading)
+           return <ActivityIndicator size="small" color="#0000ff" />;
+        return null;
+     }
     render(){
+        //this._loadInitialState().done();
         return(
             <KeyboardAvoidingView behavior ="padding" style={styles.container}>
             <Image style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, position: 'absolute', top: 0, left: 0 }} source={require('../../imgs/app/fondo.jpg')}/>
@@ -54,6 +62,9 @@ export default class LoginScreen extends React.Component{
                         />
                     </View>
                     
+                    <View style={{marginBottom: 10}}>
+                        { this.showloading() }
+                    </View>
 
                     <TouchableOpacity style={styles.loginContainer} onPress={this.login}>
                         <Text style={styles.buttonText}>Iniciar Sesión</Text>
@@ -71,9 +82,10 @@ export default class LoginScreen extends React.Component{
         );
     }
     login = () => {
-        /*
+        this.setState({loading: true});
         if (this.state.username !== '' && this.state.password !== '') {
-            fetch('URL/users',{
+            //fetch('http://192.168.0.16:3001/api/doLogin',{
+            fetch('http://172.16.13.147:3001/api/doLogin',{
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -87,19 +99,36 @@ export default class LoginScreen extends React.Component{
             .then((response) =>  response.json())
             .then((res) => {
                 if (res.success === true) {
+                    this.setState({loading: false});
                     AsyncStorage.setItem('usuario', res.user);
                     this.props.navigation.replace('Home');
                 }else{
-                    alert(res.message);
+                    this.setState({loading: false});
+                    Alert.alert(
+                        'Alerta!',
+                        'Usuario o contraseña no validos',
+                        [
+                            {text: 'OK'},
+                        ],
+                        { cancelable: false }
+                    );
                 }
             }).done();
         }else{
-            alert('Rellene los campos');
-        }*/
-        //this.props.navigation.push('Home');
+            this.setState({loading: false});
+            Alert.alert(
+                'Alerta!',
+                'Rellene todos los campos',
+                [
+                    {text: 'OK'},
+                ],
+                { cancelable: false }
+            );
+        }
+        /*this.props.navigation.push('Home');
         AsyncStorage.setItem('usuario', 'logeado').then(()=>{
             this.props.navigation.replace('Home');
-        })
+        })*/
         
     }
 }

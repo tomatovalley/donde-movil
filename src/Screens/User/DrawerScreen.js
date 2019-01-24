@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavigationActions} from 'react-navigation';
+import {NavigationActions, DrawerItems} from 'react-navigation';
 import PropTypes from 'prop-types';
 import {ScrollView, Text, View, AsyncStorage} from 'react-native';
 import { DrawerActions } from 'react-navigation';
@@ -27,8 +27,39 @@ class DrawerScreen extends Component {
     return (
       <View>
         <ScrollView>
-          <View>
-            <View style={styles.menuItem}>
+          <View style={styles.menuItem}>
+              <Text onPress={this.navigateToScreen('Inicio')}>
+                Inicio
+              </Text>
+          </View>
+          <View style={styles.menuItem}>
+            <Text onPress={this.navigateToScreen('Juego')}>
+              Juego
+            </Text>
+          </View>
+          <View style={styles.menuItem}>
+            <Text onPress={this.navigateToScreen('Tops')}>
+              Tops
+            </Text>
+          </View>
+          <View style={styles.menuItem}>
+            <Text onPress={this.cerrarSesion}>
+              Cerrar Sesion
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+DrawerScreen.propTypes = {
+  navigation: PropTypes.object
+};
+
+export default DrawerScreen;
+/*
+<View style={styles.menuItem}>
               <Text onPress={this.navigateToScreen('Inicio')}>
                 Inicio
               </Text>
@@ -47,16 +78,4 @@ class DrawerScreen extends Component {
               <Text onPress={this.cerrarSesion}>
               Cerrar Sesion
               </Text>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
-}
-
-DrawerScreen.propTypes = {
-  navigation: PropTypes.object
-};
-
-export default DrawerScreen;
+            </View>*/
