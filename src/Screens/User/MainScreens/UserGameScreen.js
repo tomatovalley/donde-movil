@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, TouchableOpacity , StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity , StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Constants, Location, Permissions } from 'expo';
+import {  Card } from 'react-native-elements'
 
 
 export default class UserGameScreen extends React.Component {
@@ -35,35 +36,44 @@ export default class UserGameScreen extends React.Component {
     render() {
         return (
           <View style={{ flex: 8,  alignItems: 'center' }}>
+          <ScrollView>
             <View style={styles.titleContainer}>
               <Text h2 style={styles.title}>Modos de juego</Text>
             </View>
-            
+
             <View style={styles.opcContainer}> 
 
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('RegionalMode')}>
-                <View style={styles.opc}>
-                  <Ionicons name="md-map" size={64} color="white" style= {{textAlign: 'center'}} />
-                  <Text style={styles.text}>
-                      Regional
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
               <TouchableOpacity onPress={() => this.props.navigation.navigate('FreeMode')}>
-                <View style={styles.opc}>
-                  <Ionicons name="md-globe" size={64} color="white" style= {{textAlign: 'center'}} />
-                  <Text style={styles.text}>
-                      Libre
-                    </Text>
-                </View>
+                <Card
+                  containerStyle={styles.opc}
+                  titleStyle={{color: '#fff'}}
+                  title='LIBRE'
+                  image={require('../../../imgs/app/fondo.jpg')}>
+                  <Text style={{marginBottom: 10, color: '#fff'}}>
+                    Imagenes aleatorias de todo el mundo, suma la mayor cantidad de puntos.
+                  </Text>
+                </Card>
               </TouchableOpacity>
+              
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('RegionalMode')}>
+                <Card
+                  containerStyle={styles.opc}
+                  titleStyle={{color: '#fff'}}
+                  title='REGIONAL'
+                  image={require('../../../imgs/app/fondo.jpg')}>
+                  <Text style={{marginBottom: 10, color: '#fff'}}>
+                    Imagen regional de la semana, ¿Conoces tu región?
+                  </Text>
+                </Card>
+              </TouchableOpacity>
+              
             </View>            
-            
+          </ScrollView>
           </View>
         );
     }
 }
+
 
 const styles = StyleSheet.create({
   opcContainer: {
@@ -84,16 +94,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   opc: {
-    margin: 10,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'rgba(47, 69, 98, 0.8)',
-    width: 300,
-    height: 110,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: 'rgba(47, 69, 98, 0.6)',
+    borderRadius: 8,
   },
   titleContainer: {
-    flex: .5
+    alignItems: 'center',
+    flex: .4
   }
 })

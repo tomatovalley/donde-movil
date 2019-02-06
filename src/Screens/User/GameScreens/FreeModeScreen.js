@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Image, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 
 export default class FreeModeScreen extends React.Component {
   constructor(props) {
@@ -23,16 +23,18 @@ export default class FreeModeScreen extends React.Component {
             <Image style={{height: 200}} source={require('../../../imgs/app/logo.png')}/>
         </View>
         <View style={{marginTop: 20, flex: 1}}>
-          <TextInput 
-            style={{height: 50, width: 290, alignItems: 'center', backgroundColor: 'rgba(47, 69, 98, 0.3)', color: '#fff', paddingHorizontal: 10, paddingLeft: 5, marginBottom: 5, borderRadius: 5}}
-            placeholder="Respuesta" 
-            onChangeText={ (txtRespuesta) => this.setState({txtRespuesta}) }
-            placeholderTextColor="rgba(255,255,255,0.7)"
-            returnKeyType="done"
-          />
+          <TouchableOpacity></TouchableOpacity>
         </View>
 
       </KeyboardAvoidingView>
     );
   }
 }
+
+const users = [
+  {
+     name: 'brynn',
+     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  },
+  //... // more users here
+ ]
