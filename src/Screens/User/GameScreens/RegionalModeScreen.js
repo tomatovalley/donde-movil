@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TextInput } from 'react-native';
-
+import GLOBALS from '../../../../globals';
 export default class RegionalModeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -9,8 +9,44 @@ export default class RegionalModeScreen extends React.Component {
       lives: null,
       counter: null,
       txtRespuesta: '',
-      Respuesta: ''
+      Respuesta: '',
+      Location: null,
+      errorMessage: null
     };
+  }
+
+  
+  getRegionalImage = () =>{
+    fetch(GLOBALS.BASE_URL+'getActiveImage',{
+      //fetch('http://172.16.13.147:3001/api/getActiveImage',{
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              latitud: this.state.username,
+              longitud: this.state.password
+          })
+      })
+      .then((response) =>  response.json())
+      .then((res) => {
+          if (res.success === true) {
+              this.setState({loading: false});
+              AsyncStorage.setItem('usuario', res.user);
+              this.props.navigation.replace('Home');
+          }else{
+              this.setState({loading: false});
+              Alert.alert(
+                  'Alerta!',
+                  'Usuario o contraseña no validos',
+                  [
+                      {text: 'OK'},
+                  ],
+                  { cancelable: false }
+              );
+          }
+      }).done();
   }
 
   render() {

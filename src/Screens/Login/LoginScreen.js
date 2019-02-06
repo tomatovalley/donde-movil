@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, ActivityIndicator, View, Alert, Image, KeyboardAvoidingView, Dimensions, Text, TouchableOpacity, TextInput, AsyncStorage  } from 'react-native';
+import GLOBALS from '../../../globals';
 
 export default class LoginScreen extends React.Component{
     constructor(props){
@@ -26,9 +27,10 @@ export default class LoginScreen extends React.Component{
         header: null
     }
     showloading(){
-        if(this.state.loading)
-           return <ActivityIndicator size="small" color="#0000ff" />;
-        return null;
+        if(this.state.loading){
+            return <ActivityIndicator size="small" color="#fff" />;
+        }else
+        return <Text style={styles.buttonText}>Iniciar Sesión</Text>;
      }
     render(){
         //this._loadInitialState().done();
@@ -62,12 +64,9 @@ export default class LoginScreen extends React.Component{
                         />
                     </View>
                     
-                    <View style={{marginBottom: 10}}>
-                        { this.showloading() }
-                    </View>
 
                     <TouchableOpacity style={styles.loginContainer} onPress={this.login}>
-                        <Text style={styles.buttonText}>Iniciar Sesión</Text>
+                        { this.showloading() }
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.loginContainer} onPress={() => this.props.navigation.navigate('Register')}>
@@ -84,8 +83,8 @@ export default class LoginScreen extends React.Component{
     login = () => {
         this.setState({loading: true});
         if (this.state.username !== '' && this.state.password !== '') {
-            //fetch('http://192.168.0.16:3001/api/doLogin',{
-            fetch('http://172.16.13.147:3001/api/doLogin',{
+            fetch(GLOBALS.BASE_URL+'doLogin',{
+            //fetch('http://172.16.13.147:3001/api/doLogin',{
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

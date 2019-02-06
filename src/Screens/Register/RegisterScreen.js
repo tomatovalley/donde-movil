@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity, TextInpu
 import { CheckBox } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
 import { Constants, Location, Permissions } from 'expo';
+import GLOBALS from '../../../globals';
 
 export default class RegisterScreen extends React.Component{
     constructor(props){
@@ -14,7 +15,7 @@ export default class RegisterScreen extends React.Component{
             email: '',
             password: '',
             password2: '',
-            Location: null,
+            location: null,
             errorMessage: null
         };
     }
@@ -25,6 +26,11 @@ export default class RegisterScreen extends React.Component{
         
     };
 
+    /**
+     * Esta funcion pregunta al usuario si está de acuerdo
+     * que se use su localización y los datos de location se guardan en 
+     * el state location
+     */
     _getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -34,19 +40,15 @@ export default class RegisterScreen extends React.Component{
         }else{
             this.setState({checked: !this.state.checked})
             let location = await Location.getCurrentPositionAsync({});
-            this.setState({ Location: location });
-            alert(this.state.Location);
+            let lat = location.coords.latitude;
+            let long = location.coords.longitude;
+            let extendedLocation = await Location.reverseGeocodeAsync({latitude: lat,longitude: long})
+            this.setState({location});
+            alert(JSON.stringify(extendedLocation[0]));
         }
     
       };
     render(){
-
-        let text = 'Waiting..';
-        if (this.state.errorMessage) {
-        text = this.state.errorMessage;
-        } else if (this.state.location) {
-        text = JSON.stringify(this.state.location);
-        }
 
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -129,8 +131,8 @@ export default class RegisterScreen extends React.Component{
             if (this.state.password !== this.state.password2) {
                 alert('Las contraseñas no coinciden.');
             } else {
-                //fetch('http://192.168.0.16:3001/api/doRegister',{
-                fetch('http://172.16.13.147:3001/api/doRegister',{
+                fetch(GLOBALS.BASE_URL+'doRegister',{
+                //fetch('http://172.16.13.147:3001/api/doRegister',{
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

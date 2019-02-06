@@ -1,8 +1,37 @@
 import React from 'react';
-import { Text, View, TouchableOpacity , Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity , StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Constants, Location, Permissions } from 'expo';
+
 
 export default class UserGameScreen extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      location: null,
+      errorMessage: null
+    }
+  }
+
+      /**
+     * Esta funcion pregunta al usuario si está de acuerdo
+     * que se use su localización y los datos de location se guardan en 
+     * el state location
+     */
+    _getLocationAsync = async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        this.setState({
+          errorMessage: 'Permission to access location was denied',
+        });
+      }else{
+          this.setState({checked: !this.state.checked})
+          let location = await Location.getCurrentPositionAsync({});
+          this.setState({location});
+          alert(JSON.stringify(this.state.location.coords));
+      }
+  
+    };
     render() {
         return (
           <View style={{ flex: 8,  alignItems: 'center' }}>
