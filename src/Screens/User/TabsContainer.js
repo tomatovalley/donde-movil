@@ -4,7 +4,6 @@ import { createMaterialTopTabNavigator, createAppContainer, createDrawerNavigato
 import DrawerScreen from './DrawerScreen';
 
 //Pantallas
-import UserHomeScreen from './MainScreens/UserHomeScreen';
 import UserTopsScreen from './MainScreens/UserTopsScreen';
 import App from './MainScreens/UserGameScreen';
 
@@ -12,7 +11,6 @@ import App from './MainScreens/UserGameScreen';
 
 //Aqui se crean las tabs
 const Tabs = createMaterialTopTabNavigator({
-  Inicio: UserHomeScreen,
   Juego: App,
   Tops: UserTopsScreen,
 },{
