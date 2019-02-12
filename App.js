@@ -9,6 +9,8 @@ import RegisterScreen from './src/Screens/Register/RegisterScreen';
 import TabsContainer from './src/Screens/User/TabsContainer';
 import RegionalModeScreen from './src/Screens/User/GameScreens/RegionalModeScreen';
 import FreeModeScreen from './src/Screens/User/GameScreens/FreeModeScreen';
+import GameResultScreen from './src/Screens/User/GameScreens/GameResultScreen';
+
 
 export default class App extends React.Component {
   render(){
@@ -56,6 +58,15 @@ FreeMode: { screen: FreeModeScreen,
                 backgroundColor: 'rgba(47, 69, 98, 1)'
               },
               title: 'Libre',
+              headerTintColor: '#fff'
+            })
+          },
+Result: { screen: GameResultScreen, 
+            navigationOptions: ({navigation}) => ({
+              headerStyle: {
+                backgroundColor: 'rgba(47, 69, 98, 1)'
+              },
+              title: 'Resultados',
               headerTintColor: '#fff'
             })
           }

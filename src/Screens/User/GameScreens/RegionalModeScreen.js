@@ -99,7 +99,7 @@ export default class RegionalModeScreen extends React.Component {
           <KeyboardAvoidingView behavior ="padding" style={styles.maxContainer}>
             <View>
               <View style={styles.donde}>
-                <Text style={styles.text}>¿Donde?</Text>
+                <Text style={styles.text}>¿Dónde?</Text>
               </View>
               <View style={styles.imageContainer}>
                 { this.isThereAImage() }
@@ -152,6 +152,14 @@ export default class RegionalModeScreen extends React.Component {
               }
             }).then((response) => response.json())
             .then((res) => {
+              
+              if (res.isAnswerCorrect) {
+                this.props.navigation.replace('Result',{res});
+                console.info("le atino numa");
+              } else {
+                this.props.navigation.replace('Result',{res});
+                console.log("no le atino el meco");
+              }
               console.info("lo que trae response: "+JSON.stringify(res));
             });
         }else{
@@ -160,7 +168,7 @@ export default class RegionalModeScreen extends React.Component {
       });
       
     }else{
-      alert("Pon algo jeje");
+      alert("Escribe algo");
     }
     
   }

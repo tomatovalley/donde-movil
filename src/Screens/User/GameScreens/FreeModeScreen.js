@@ -45,7 +45,7 @@ export default class FreeModeScreen extends React.Component {
       <View style={styles.maxContainer}>
       
           <View style={styles.donde}>
-            <Text style={styles.text}>¿Donde?</Text>
+            <Text style={styles.text}>¿Dónde?</Text>
           </View>
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={require('../../../imgs/app/regional.jpg')}/> 
