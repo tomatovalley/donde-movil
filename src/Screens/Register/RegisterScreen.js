@@ -132,7 +132,6 @@ export default class RegisterScreen extends React.Component{
                 alert('Las contraseñas no coinciden.');
             } else {
                 fetch(GLOBALS.BASE_URL+'doRegister',{
-                //fetch('http://172.16.13.147:3001/api/doRegister',{
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -155,7 +154,7 @@ export default class RegisterScreen extends React.Component{
                         this.props.navigation.replace('Home');
                     }else{
                         alert(res.message);
-                    }alert(res);
+                    }
                 }).done();
             }
         }else{

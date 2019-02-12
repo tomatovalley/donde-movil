@@ -37,31 +37,27 @@ export default class UserGameScreen extends React.Component {
         return (
           <View style={{ flex: 8,  alignItems: 'center' }}>
           <ScrollView>
-            <View style={styles.titleContainer}>
-              <Text h2 style={styles.title}>Modos de juego</Text>
-            </View>
-
             <View style={styles.opcContainer}> 
 
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('FreeMode')}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('FreeMode')} activeOpacity={.7} >
                 <Card
                   containerStyle={styles.opc}
-                  titleStyle={{color: '#fff'}}
+                  titleStyle={{color: 'rgba(47, 69, 98, 1)'}}
                   title='LIBRE'
                   image={require('../../../imgs/app/fondo.jpg')}>
-                  <Text style={{marginBottom: 10, color: '#fff'}}>
+                  <Text style={{marginBottom: 10, color: 'rgba(47, 69, 98, 1)'}}>
                     Imagenes aleatorias de todo el mundo, suma la mayor cantidad de puntos.
                   </Text>
                 </Card>
               </TouchableOpacity>
               
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('RegionalMode')}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('RegionalMode')} activeOpacity={.7} >
                 <Card
                   containerStyle={styles.opc}
-                  titleStyle={{color: '#fff'}}
+                  titleStyle={{color: 'rgba(47, 69, 98, 1)'}}
                   title='REGIONAL'
-                  image={require('../../../imgs/app/fondo.jpg')}>
-                  <Text style={{marginBottom: 10, color: '#fff'}}>
+                  image={require('../../../imgs/app/regional.jpg')}>
+                  <Text style={{marginBottom: 10, color: 'rgba(47, 69, 98, 1)'}}>
                     Imagen regional de la semana, ¿Conoces tu región?
                   </Text>
                 </Card>
@@ -83,7 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   text: {
-    color: '#fff',
+    color: 'rgba(47, 69, 98, 1)',
     fontSize: 19,
     fontFamily: 'Roboto',
   },
@@ -94,11 +90,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   opc: {
-    backgroundColor: 'rgba(47, 69, 98, 0.6)',
+    backgroundColor: 'rgba(47, 69, 98, 0.2)',
     borderRadius: 8,
+    marginTop: 20
   },
-  titleContainer: {
-    alignItems: 'center',
-    flex: .4
-  }
+
 })

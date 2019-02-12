@@ -17,10 +17,15 @@ export default class LoginScreen extends React.Component{
     }
 */
     _loadInitialState= async () => {
-        var value = await AsyncStorage.getItem('usuario');
-        if(value !== null){
-            this.props.navigation.replace('Home');
-        }
+        await AsyncStorage.getItem('usuario').then((data)=>{
+            if(data !== null){
+                console.info(data);
+                this.props.navigation.replace('Home');
+            }else{
+                console.info("Algo salio super bad");
+            }
+        })
+        
     }
 
     static navigationOptions ={
@@ -99,8 +104,16 @@ export default class LoginScreen extends React.Component{
             .then((res) => {
                 if (res.success === true) {
                     this.setState({loading: false});
-                    AsyncStorage.setItem('usuario', res.user);
-                    this.props.navigation.replace('Home');
+                    console.info("lo que tienen res: "+JSON.stringify(res));
+                    this.setStorage(res.id).then((response)=>{
+                        if (!response) {
+                            this.props.navigation.replace('Home');
+                        } else {
+                            console.info("algo salio mal");
+                        }
+                        
+                    })
+
                 }else{
                     this.setState({loading: false});
                     Alert.alert(
@@ -129,6 +142,19 @@ export default class LoginScreen extends React.Component{
             this.props.navigation.replace('Home');
         })*/
         
+    }
+
+    setStorage = async (data)=>{
+        console.info("Esta recibiendo esto: "+data);
+        await AsyncStorage.setItem('usuario', data , function(error){
+            if (error) {
+                console.error("retorna false");
+                return false;
+            } else {
+                console.info("retorna true");
+                return true;
+            }
+        })
     }
 }
 

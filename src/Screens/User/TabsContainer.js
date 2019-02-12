@@ -35,7 +35,7 @@ const AppDrawerNavigator = createDrawerNavigator({
 },{
   initialRouteName: 'Inicio',
   contentComponent: DrawerScreen,
-  drawerWidth: 250
+  drawerWidth: 280
 });
 
 const MenuImage = ({navigation}) => {
