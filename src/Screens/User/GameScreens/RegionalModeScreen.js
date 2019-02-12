@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TextInput, KeyboardAvoidingView, StyleSheet, ActivityIndicator, TouchableOpacity, AsyncStorage } from 'react-native';
 import GLOBALS from '../../../../globals';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { Constants, Location, Permissions } from 'expo';
+import { Location } from 'expo';
 
 
 export default class RegionalModeScreen extends React.Component {
