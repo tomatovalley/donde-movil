@@ -148,12 +148,13 @@ export default class RegisterScreen extends React.Component{
                 })
                 .then((response) =>  response.json())
                 .then((res) => {
-                    if (res.success === true) {
-                        AsyncStorage.setItem('usuario', res.user);
-                        alert("Felicidades",res);
+                    if (res.success) {
+                        console.info("id: "+res.userdata.id);
+                        AsyncStorage.setItem('usuario', res.userdata.id);
                         this.props.navigation.replace('Home');
                     }else{
-                        alert(res.message);
+                        //console.error(JSON.stringify(res));
+                        alert(res.msg);
                     }
                 }).done();
             }

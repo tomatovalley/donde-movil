@@ -22,7 +22,7 @@ export default class LoginScreen extends React.Component{
                 console.info(data);
                 this.props.navigation.replace('Home');
             }else{
-                console.info("Algo salio super bad");
+                console.info("No se encontró data local");
             }
         })
         
