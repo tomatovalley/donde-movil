@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
+
 export default class GameResultScreen extends React.Component {
   constructor(props){
     super(props);
@@ -11,28 +12,33 @@ export default class GameResultScreen extends React.Component {
     }
   }
     render() {
-      if(this.props.navigation.state.params.res.isAnswerCorrect){
-        return (
-          <View style={styles.content}>
-            
-            <Text style={styles.headerTxt1}>¡Bien Hecho!</Text>
-            <Text>Haz ganado: {this.props.navigation.state.params.res.value } puntos</Text>
-            <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.goBack()}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>IR A INICIO</Text>
-            </TouchableOpacity>
-          </View>
-        );
-      }else{
-        return( 
-          <View style={styles.content}>
-            <Text style={styles.headerTxt2}>¡Fallaste!</Text>
-            <Text>Mejor suerte a la proxima</Text>
-            <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.replace('RegionalMode')}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>REGRESAR</Text>
-            </TouchableOpacity>
-          </View>
-        );
+      if (this.props.navigation.state.params.mode == 0) {
+        if(this.props.navigation.state.params.res.isAnswerCorrect){
+          return (
+            <View style={styles.content}>
+              
+              <Text style={styles.headerTxt1}>¡Bien Hecho!</Text>
+              <Text>Haz ganado: {this.props.navigation.state.params.res.value } puntos</Text>
+              <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.goBack()}>
+                <Text style={{color: "#fff", textAlign: 'center'}}>IR A INICIO</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }else{
+          return( 
+            <View style={styles.content}>
+              <Text style={styles.headerTxt2}>¡Fallaste!</Text>
+              <Text>Mejor suerte a la proxima</Text>
+              <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.replace('RegionalMode')}>
+                <Text style={{color: "#fff", textAlign: 'center'}}>REGRESAR</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+      } else {
+        
       }
+      
         
     }
 }

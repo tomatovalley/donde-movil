@@ -154,13 +154,15 @@ export default class RegionalModeScreen extends React.Component {
             .then((res) => {
               
               if (res.isAnswerCorrect) {
-                this.props.navigation.replace('Result',{res});
+                this.props.navigation.replace('Result',{res,mode: 0});
                 console.info("le atino numa");
               } else {
-                this.props.navigation.replace('Result',{res});
+                this.props.navigation.replace('Result',{res, mode: 0});
                 console.log("no le atino el meco");
               }
               console.info("lo que trae response: "+JSON.stringify(res));
+            },(error)=>{
+              console.error(error);
             });
         }else{
             console.info("Algo salio super bad");

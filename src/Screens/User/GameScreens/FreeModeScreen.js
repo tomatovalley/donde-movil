@@ -1,71 +1,164 @@
 import React from 'react';
-import { View, Text, Image, ScrollView,  StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView,  StyleSheet, ActivityIndicator, TouchableOpacity, AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import GLOBALS from '../../../../globals';
 
 export default class FreeModeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0,
-      Respuesta: '',
-      imgs:  [
-        {
-           img: '../../../imgs/app/regional.jpg',
-           pRespuestas: [
-             {resp: 'romania'},
-             {resp: 'USA'}
-           ],
-           respuesta: 'mexico'
-        },
-        {
-          img: '../../../imgs/app/logo.png',
-          pRespuestas: [
-            {resp: 'Canda'},
-            {resp: 'España'},
-            {resp: ''}
-          ],
-          respuesta: 'china'
-        },
-        {
-          img: '../../../imgs/app/regional.jpg',
-          pRespuestas: [
-            {resp: 'Brasil'},
-            {resp: 'Costa rica'}
-          ],
-          respuesta: 'rusia'
-        },
-        //... // more users here
-       ]
+      puntos: 0,
+      message: null,
+      isLoading: true,
+      data: null,
+      IsAnImage: false,
+      isUser: null
     };
+    this.obtenerImagenes().done();
+
+  }
+  /**
+   * Esta funcion obtiene una imagen en caso de que haya una
+   * Tambien obtiene las respuestas y mas datos sobre la imagen
+   */
+  obtenerImagenes =async () =>{
+    await AsyncStorage.getItem('usuario').then((id)=>{
+      if(id != null){
+        this.setState({idUser: id},
+          ()=>{
+            fetch(GLOBALS.BASE_URL+`getImageGlobal?_id=${id}`, {
+              method: "GET",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              }
+            }).then((response) => response.json())
+            .then((res)=>{
+              if(res.rs != null){
+                this.setState({data: {img: res.rs.URL, id: res.rs._id, resp: res.rs.Answers}},
+                  ()=>{
+                    this.setState({isLoading: false});
+                    this.setState({IsAnImage: true});
+                    console.info(this.state.data);
+                  });
+                
+              }else{
+                console.info("no hay imagenes, por lo tanto se recibio un mensaje");
+                this.setState({message: res.msg});
+              }
+            });
+          })
+      }else{
+        alert("Ha ocurrido un error");
+        console.error("Ha ocrrido un error");
+        this.props.navigation.goBack();
+      }
+    })
+  }
+
+  /**
+   * Esta funcion compara si ya se logó la conexion y se obtuvieron los datos para ser 
+   * mostrados ( la imagen, id, etc)
+   */
+  showImage(){
+    if(this.state.data != null){
+      return <Image style={styles.image} source={{uri: this.state.data.img}}/> 
+    }else{
+      return <ActivityIndicator size="small" />
+    }
+  }
+
+  /**
+   * Con esta funcion se verifican y muestran las respuestas
+   */
+  displayButtons(){
+    if(this.state.data.resp != null){
+      return this.state.data.resp.map((respuesta)=>{
+        console.info(respuesta);
+        return(
+          <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.checkAnswer({respuesta})}>
+            <Text style={{color: "#fff", textAlign: 'center'}}>{respuesta}</Text>
+          </TouchableOpacity>
+        );
+        
+      })
+      
+    }else{
+      console.error("no hy respuestas");
+      return <Text>No hay Respuestas bro</Text>
+    }
+
+  }
+  /**
+   * Esta funcion sirve para verificar la respuesta
+   * para comparar si la opcion que seleccionó es la correcta
+   * @param {String} respuesta es el texto que tiene  la respuesta
+   */
+  checkAnswer = async (respuesta) =>{
+    //console.info(respuesta.respuesta);
+    fetch(GLOBALS.BASE_URL+`checkAnswerGlobal?_id=${this.state.data.id}&user_id=${this.state.idUser}&respuesta=${respuesta.respuesta}`, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => response.json())
+    .then((res)=>{
+      if(res.correcto){
+        
+        console.info(res.msg);
+      }else{
+        console.info(res.msg);
+      }
+      //console.info("esto tiene RES: "+JSON.stringify(res));
+    });
+  }
+  /**
+   * esta funcion hace que se muestre un mensaje en caso de que haya uno
+   */
+  showMessage(){
+    if (this.state.message != null) {
+      return <Text>{this.state.message}</Text>
+    } else {
+      return <ActivityIndicator size="large" />
+    }
   }
 
   render() {
-    return (
-      <ScrollView>
-      <View style={styles.maxContainer}>
-      
-          <View style={styles.donde}>
-            <Text style={styles.text}>¿Dónde?</Text>
-          </View>
-          <View style={styles.imageContainer}>
-            <Image style={styles.image} source={require('../../../imgs/app/regional.jpg')}/> 
-          </View>
-
-          <View style={styles.btnContainer}>
-            <TouchableOpacity activeOpacity={.7} style={styles.btn}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>RESPUESTA 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={.7} style={styles.btn}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>RESPUESTA 2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={.7} style={styles.btn}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>RESPUESTA 3</Text>
-            </TouchableOpacity>
-          </View>
+    if(this.state.isLoading){
+      return(
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" />
+        </View>
+      )
+    }else{
+      if(this.state.IsAnImage){
+        return (
+          <ScrollView>
+            <View style={styles.maxContainer}>
           
-      </View>
-      </ScrollView>
-    );
+              <View style={styles.donde}>
+                <Text style={styles.text}>¿Dónde?</Text>
+              </View>
+              <View style={styles.imageContainer}>
+                {this.showImage()}
+              </View>
+    
+              <View style={styles.btnContainer}>
+                {this.displayButtons()}
+              </View>
+              
+            </View>
+          </ScrollView>
+        );
+      }else{
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          {this.showMessage()}
+        </View>
+      }
+      
+    }
+    
   }
 }
 
