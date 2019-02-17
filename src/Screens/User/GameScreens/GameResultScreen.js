@@ -24,7 +24,7 @@ export default class GameResultScreen extends React.Component {
               </TouchableOpacity>
             </View>
           );
-        }else{
+        }else {
           return( 
             <View style={styles.content}>
               <Text style={styles.headerTxt2}>¡Fallaste!</Text>
@@ -35,7 +35,7 @@ export default class GameResultScreen extends React.Component {
             </View>
           );
         }
-      } else {
+      } else if (this.props.navigation.state.params.mode == 1){
         if (this.props.navigation.state.params.res.correcto) {
           return (
             <View style={styles.content}>
@@ -60,6 +60,17 @@ export default class GameResultScreen extends React.Component {
             </View>
           );
         }
+      }else{
+        return( 
+          <View style={styles.content}>
+            <Text style={styles.headerTxt2}>¡Lo sentimos!</Text>
+            <Text>Parece que nos hemos quedado sin imagenes</Text>
+            <Text>Haz hecho un total de {this.props.navigation.state.params.points } puntos</Text>
+            <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.goBack()}>
+              <Text style={{color: "#fff", textAlign: 'center'}}>IR AL INICIO</Text>
+            </TouchableOpacity>
+          </View>
+        );
       }
       
     }
