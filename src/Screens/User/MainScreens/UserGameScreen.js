@@ -39,7 +39,7 @@ export default class UserGameScreen extends React.Component {
           <ScrollView>
             <View style={styles.opcContainer}> 
 
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('FreeMode')} activeOpacity={.7} >
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('FreeMode',{puntuacion: 0})} activeOpacity={.7} >
                 <Card
                   containerStyle={styles.opc}
                   titleStyle={{color: 'rgba(47, 69, 98, 1)'}}

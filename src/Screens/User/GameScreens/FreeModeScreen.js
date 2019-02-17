@@ -44,7 +44,11 @@ export default class FreeModeScreen extends React.Component {
                 
               }else{
                 console.info("no hay imagenes, por lo tanto se recibio un mensaje");
-                this.setState({message: res.msg});
+                this.setState({message: res.msg},()=>{
+                  this.setState({isLoading: false});
+                  this.setState({IsAnImage: false});
+                });
+                
               }
             });
           })
@@ -105,10 +109,11 @@ export default class FreeModeScreen extends React.Component {
     }).then((response) => response.json())
     .then((res)=>{
       if(res.correcto){
-        
-        console.info(res.msg);
+        //console.info(res);
+        this.props.navigation.replace('Result',{res, mode: 1, points: (this.props.navigation.state.params.puntuacion + res.puntos)});
       }else{
-        console.info(res.msg);
+        //console.info(res);
+        this.props.navigation.replace('Result',{res, mode: 1, points: this.props.navigation.state.params.puntuacion});
       }
       //console.info("esto tiene RES: "+JSON.stringify(res));
     });
@@ -117,7 +122,9 @@ export default class FreeModeScreen extends React.Component {
    * esta funcion hace que se muestre un mensaje en caso de que haya uno
    */
   showMessage(){
+    //console.info("Esta entrando a la funcion");
     if (this.state.message != null) {
+      console.info("Mensaje en la funcion: "+this.state.message);
       return <Text>{this.state.message}</Text>
     } else {
       return <ActivityIndicator size="large" />
@@ -152,9 +159,11 @@ export default class FreeModeScreen extends React.Component {
           </ScrollView>
         );
       }else{
+        return(
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {this.showMessage()}
         </View>
+        )
       }
       
     }

@@ -36,10 +36,32 @@ export default class GameResultScreen extends React.Component {
           );
         }
       } else {
-        
+        if (this.props.navigation.state.params.res.correcto) {
+          return (
+            <View style={styles.content}>
+              
+              <Text style={styles.headerTxt1}>¡Bien Hecho!</Text>
+              <Text>Haz ganado: {this.props.navigation.state.params.res.puntos } puntos</Text>
+              <Text>Total de {this.props.navigation.state.params.points } puntos </Text>
+              <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.replace('FreeMode',{puntuacion: this.props.navigation.state.params.points})}>
+                <Text style={{color: "#fff", textAlign: 'center'}}>CONTINUAR</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }else{
+          return( 
+            <View style={styles.content}>
+              <Text style={styles.headerTxt2}>¡Fallaste!</Text>
+              <Text>Mejor suerte a la proxima</Text>
+              <Text>Haz hecho un total de {this.props.navigation.state.params.points } puntos</Text>
+              <TouchableOpacity activeOpacity={.7} style={styles.btn} onPress={() => this.props.navigation.goBack()}>
+                <Text style={{color: "#fff", textAlign: 'center'}}>IR AL INICIO</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
       }
       
-        
     }
 }
 
