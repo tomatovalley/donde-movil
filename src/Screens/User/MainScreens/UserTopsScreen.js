@@ -30,7 +30,6 @@ export default class UserTopsScreen extends React.Component {
         if (res.success) {
           this.setState({myInfo: res.current_user},()=>{
             this.setState({posiciones: res.usuarios}, ()=>{
-              console.info(res.usuarios);
               this.setState({isLoading: false});
               this.setState({isInfo: true});
             }) 
