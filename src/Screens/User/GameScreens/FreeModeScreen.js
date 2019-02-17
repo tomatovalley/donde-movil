@@ -131,33 +131,6 @@ export default class FreeModeScreen extends React.Component {
     }
   }
 
-  /**
-   * Esta funcion sirve para mostar los botones dependiendo del texto
-   */
-  showButton(){
-    console.info("Esta entrando a la funcion");
-    if (this.state.message != null) {
-      if (this.props.navigation.state.params.puntuacion > 0) {
-        console.info("entró al if");
-        return (
-          <TouchableOpacity activeOpacity={.7} style={styles.btnMSG} onPress={() => this.props.navigation.replace('Result',{mode: 2, points: this.props.navigation.state.params.puntuacion})}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>IR AL RESULTADO</Text>
-          </TouchableOpacity>
-
-        );
-      } else {
-        console.info("no entro al if");
-        return (
-          <TouchableOpacity activeOpacity={.7} style={styles.btnMSG} onPress={() => this.props.navigation.goBack()}>
-              <Text style={{color: "#fff", textAlign: 'center'}}>IR AL INICIO</Text>
-          </TouchableOpacity>
-        );
-      }
-    } else {
-      return <ActivityIndicator size="large" />
-    }
-  }
-
   render() {
     if(this.state.isLoading){
       return(
@@ -189,7 +162,6 @@ export default class FreeModeScreen extends React.Component {
         return(
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {this.showMessage()}
-          {this.showButton()}
         </View>
         )
       }
@@ -243,12 +215,5 @@ export default class FreeModeScreen extends React.Component {
     marginTop: 10,
     width: wp('95%'),
     height: hp('35%'),
-  },
-  btnMSG: {
-    backgroundColor: 'rgba(47, 69, 98, 0.8)',
-    paddingVertical: 15,
-    marginTop: 7,
-    borderRadius: 5,
-    width: wp('75%'),
-  },
+  }
  });

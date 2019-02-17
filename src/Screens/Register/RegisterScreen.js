@@ -117,7 +117,10 @@ export default class RegisterScreen extends React.Component{
                     <Text style={styles.buttonText}>Registrarse</Text>
                 </TouchableOpacity>
 
-                
+                <TouchableOpacity style={styles.FbkRefisterButton} onPress={this.doFbRegister}>
+                    <Ionicons name="logo-facebook" size={32} color="white" style= {{textAlign: 'center'}} />
+                    <Text style={styles.buttonText}>Registarse con Facebook</Text>
+                </TouchableOpacity>
                 
             </KeyboardAvoidingView>
         );
